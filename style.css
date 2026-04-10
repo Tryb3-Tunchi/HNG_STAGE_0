@@ -1,0 +1,451 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0c0c11;
+  --surface: #13131a;
+  --surface-2: #1c1c26;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.14);
+
+  --text-1: #eeeef2;
+  --text-2: #9898a8;
+  --text-3: #45455a;
+
+  --indigo: #6366f1;
+  --indigo-soft: rgba(99, 102, 241, 0.14);
+  --red: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.12);
+  --amber: #fbbf24;
+  --amber-soft: rgba(251, 191, 36, 0.12);
+  --green: #4ade80;
+  --green-soft: rgba(74, 222, 128, 0.12);
+
+  --radius-card: 22px;
+  --radius-badge: 100px;
+  --radius-btn: 10px;
+
+  --shadow-card:
+    0 0 0 1px rgba(99, 102, 241, 0.12), 0 20px 60px rgba(0, 0, 0, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration: 0.2s;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(
+      ellipse 70% 50% at 15% 20%,
+      rgba(99, 102, 241, 0.13) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 85% 80%,
+      rgba(248, 113, 113, 0.07) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 60% at 50% 50%,
+      rgba(99, 102, 241, 0.04) 0%,
+      transparent 80%
+    );
+  font-family: "Instrument Sans", sans-serif;
+  color: var(--text-1);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+article[data-testid="test-todo-card"] {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition:
+    transform var(--duration) var(--ease),
+    box-shadow var(--duration) var(--ease);
+  animation: cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+article[data-testid="test-todo-card"]:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.22),
+    0 28px 70px rgba(0, 0, 0, 0.6),
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 50% 40% at 92% -5%,
+    rgba(99, 102, 241, 0.15) 0%,
+    transparent 65%
+  );
+  border-radius: inherit;
+}
+
+.card__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+.card__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.card__title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.checkbox-wrap {
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(99, 102, 241, 0.45);
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+  flex-shrink: 0;
+  transition:
+    background var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:checked {
+  background: var(--indigo);
+  border-color: var(--indigo);
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:checked
+  + .checkmark {
+  opacity: 1;
+  transform: translate(-50%, -58%) scale(1) rotate(45deg);
+}
+
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: translate(-50%, -58%) scale(0.4) rotate(45deg);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+input[type="checkbox"][data-testid="test-todo-complete-toggle"]:focus-visible {
+  outline: 2.5px solid var(--indigo);
+  outline-offset: 3px;
+}
+
+h2[data-testid="test-todo-title"] {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  transition: color var(--duration) var(--ease);
+}
+
+h2[data-testid="test-todo-title"].is-done {
+  text-decoration: line-through;
+  color: var(--text-3);
+}
+
+.card__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  transition:
+    background var(--duration) var(--ease),
+    color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease),
+    transform 0.1s ease;
+}
+
+.icon-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--border-hover);
+  color: var(--text-1);
+}
+
+.icon-btn:active {
+  transform: scale(0.9);
+}
+
+.icon-btn:focus-visible {
+  outline: 2.5px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+button[data-testid="test-todo-edit-button"]:hover {
+  background: var(--indigo-soft);
+  border-color: rgba(99, 102, 241, 0.22);
+  color: #a5b4fc;
+}
+
+button[data-testid="test-todo-delete-button"]:hover {
+  background: var(--red-soft);
+  border-color: rgba(248, 113, 113, 0.22);
+  color: var(--red);
+}
+
+.card__badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-badge);
+  border: 1px solid transparent;
+  line-height: 1;
+}
+
+.badge--priority {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: rgba(248, 113, 113, 0.18);
+}
+
+span[data-testid="test-todo-status"] {
+  transition:
+    background var(--duration) var(--ease),
+    color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+
+.status--pending {
+  background: var(--indigo-soft);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.status--in-progress {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-color: rgba(251, 191, 36, 0.18);
+}
+
+.status--done {
+  background: var(--green-soft);
+  color: var(--green);
+  border-color: rgba(74, 222, 128, 0.18);
+}
+
+p[data-testid="test-todo-description"] {
+  font-size: 0.875rem;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin-bottom: 18px;
+  transition: color var(--duration) var(--ease);
+}
+
+p[data-testid="test-todo-description"].is-done {
+  color: var(--text-3);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border) 20%,
+    var(--border) 80%,
+    transparent
+  );
+  margin-bottom: 16px;
+}
+
+.card__date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.date-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.date-icon {
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+}
+
+time[data-testid="test-todo-due-date"] {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.01em;
+}
+
+span[data-testid="test-todo-time-remaining"] {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 3px 10px;
+  border-radius: var(--radius-badge);
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid rgba(248, 113, 113, 0.16);
+  transition:
+    background var(--duration) var(--ease),
+    color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+
+span[data-testid="test-todo-time-remaining"].upcoming {
+  background: var(--amber-soft);
+  color: var(--amber);
+  border-color: rgba(251, 191, 36, 0.16);
+}
+
+ul[data-testid="test-todo-tags"] {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+ul[data-testid="test-todo-tags"] li {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  padding: 4px 11px;
+  border-radius: var(--radius-badge);
+  letter-spacing: 0.02em;
+  cursor: default;
+  transition: background var(--duration) var(--ease);
+}
+
+ul[data-testid="test-todo-tags"] li:hover {
+  background: rgba(99, 102, 241, 0.16);
+}
+
+@media (max-width: 480px) {
+  article[data-testid="test-todo-card"] {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  h2[data-testid="test-todo-title"] {
+    font-size: 0.97rem;
+  }
+
+  .card__date-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
