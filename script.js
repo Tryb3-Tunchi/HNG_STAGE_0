@@ -43,7 +43,21 @@ function updateTimeRemaining() {
 }
 
 
+checkbox.addEventListener("change", function () {
+  const isDone = this.checked;
 
+
+  titleEl.classList.toggle("is-done", isDone);
+
+ 
+  descEl.classList.toggle("is-done", isDone);
+
+ 
+  statusBadge.classList.remove("status--pending", "status--in-progress", "status--done");
+  statusBadge.classList.add(isDone ? "status--done" : "status--in-progress");
+  statusBadge.textContent = isDone ? "Done" : "In Progress";
+  statusBadge.setAttribute("aria-label", "Status: " + (isDone ? "Done" : "In Progress"));
+});
 
 
 editBtn.addEventListener("click", function () {
